@@ -44,4 +44,7 @@ app.listen(port,()=>
 //here we use route /api/todo/auth + /register from route to post register request
 app.use("/api/todo/auth",require("./routes/user.js"));
 
+app.get("/",(req, res)=>{
+    res.send("Hello Adil,Your App is running");
+});
 
