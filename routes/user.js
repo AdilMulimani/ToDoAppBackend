@@ -11,72 +11,78 @@ const jwt = require("jsonwebtoken");
 //getting the user model here
 const user_model = require("../models/User.js");
 
-
-
 //posting a request at end point /register
 //authentication and authorization
-router.post('/register', async (req, res, next) => {
+router.post("/register",async(req, res)=>{
     //to store user details we need to get it from client,
     //so we need to pass the parameters to server
     //we can take parameters using req.body or req.query
-
     console.log(req.body);
-    const { username, email, password } = req.body;
+
+    //when the client registers its data is stored in this object literal
+    const {username,email,password} = req.body;
 
     //checking of user is already registered through email
     //we get exception in async
-    try {
-//till the user data is fetched we wait
-        let user_exist = await user_model.findOne({ email: email });
+    try {//till the user data is fetched we wait
+        let user_exists = await user_model.findOne({email: email});
         //if users email already registered
-        if(user_exist) {
+        if (user_exists) {
             //we send a response that registration was unsuccessful and user already exists
-            return res.status(400).json({
+           res.json({
                 success: false,
-                msg: 'User already exists'
+                message: "User Already Exists"
             });
-        }
-        //creating a new instance of user to register user.
-        let user = new user_model();
+        } else if (!user_exists) {
+            //creating a new instance of user to register user.
+            let user = new user_model();
+            user.username = username;
+            user.email = email;
+            //encrypting password
+            const salt = await bcryptjs.genSalt(10);
+            user.password = await bcryptjs.hash(password, salt);
+            //creating an avatar logo
+            let size = 200;
+            user.avatar = "https://gravatar.com/avatar/?s=" + size + "&d=robohash";
 
-        user.username = username;
-        user.email = email;
+            //saving the user to database
+            await user.save();
 
-        const salt = await bcryptjs.genSalt(10);
-        user.password = await bcryptjs.hash(password, salt);
+            //creating a payload
+            // The payload is used to convey information between parties in a compact and secure manner.
+            //JWTs are commonly used for authentication and authorization in web applications and APIs
+            //The payload typically contains information about the user (such as user ID or roles)
+            //or additional contextual information about the token itself (such as expiration time or issuer).
 
-        let size = 200;
-        user.avatar = "https://gravatar.com/avatar/?s="+size+'&d=robohash';
-
-
-        await user.save();
-
-        const payload = {
-            user: {
-                id: user.id
+            const payLoad = {
+                user: {
+                    id: user.id
+                }
             }
-        }
 
-
-        jwt.sign(payload, process.env.jwtUserSecret, {
-            expiresIn: 360000
-        }, (err, token) => {
-            if(err) throw err;
-
-            res.status(200).json({
-                success: true,
-                token: token
+            jwt.sign(payLoad, process.env.JWTUSERSECRETTOKEN, {
+                expiresIn: 360000
+            }, (err, token) => {
+                if (err) throw err;
+                else res.status(200).json({
+                    success: true,
+                    token: token
+                });
             });
-        });
 
+            //     //returning a response when the user is registered
+            //     res.json({
+            //         success:true,
+            //         msg:"User Registered Successfully",
+            //         user:user
+            //     });
 
-
-    } catch(err) {
-        console.log(err);
-        res.status(402).json({
-            success: false,
-            message: 'Something error occurred'
-        })
+        }
+    }
+    //if any error occurs we log it
+    catch (err)
+    {
+        console.log(err)
     }
 });
 
