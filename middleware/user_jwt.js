@@ -13,7 +13,7 @@ module.exports = async (req,res,next)=>{
     //if token is not present
     if(!token)
     {
-       return res.json.status(401).json({
+       return res.status(401).json({
            msg:"No token, Authorization Denied"
        })
     }
@@ -24,7 +24,7 @@ module.exports = async (req,res,next)=>{
                 if(err)
                 {
                     res.status(401).json({
-                        msh:"Token not valid"
+                        msg:"Token not valid"
                     });
                 }
                 else

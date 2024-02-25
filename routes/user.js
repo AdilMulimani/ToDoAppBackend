@@ -108,7 +108,7 @@ router.post("/login",async (req, res)=>{
                 msg:"You have not registered"
             });
         }
-        else if(user)
+        else if(user) //if user is present in database
         {
             //returns true if user is password matches
             const isMatch = await bcryptjs.compare(password,user.password);
