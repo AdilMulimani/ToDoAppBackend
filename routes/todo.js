@@ -38,7 +38,6 @@ router.post("/",auth,async (req, res, next)=>{
 });
 
 //fetch all to do tasks
-
 router.get("/",auth,async (req, res, next)=>{
     try {
         //we will get all the unfinished to do task
@@ -155,5 +154,6 @@ router.get("/finished",auth,async (req, res, next)=>{
     }
 });
 
+//exporting router so that it can be uses
 module.exports = router;
 

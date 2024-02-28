@@ -70,13 +70,6 @@ router.post("/register",async(req, res)=>{
                 });
             });
 
-            //     //returning a response when the user is registered
-            //     res.json({
-            //         success:true,
-            //         msg:"User Registered Successfully",
-            //         user:user
-            //     });
-
         }
     }
     //if any error occurs we log it
@@ -154,5 +147,23 @@ router.post("/login",async (req, res)=>{
     }
 
 })
+
+router.get('/', user_jwt, async(req, res, next) => {
+    try {
+
+        const user = await user_model.findById(req.user.id).select('-password');
+        res.status(200).json({
+            success: true,
+            user: user
+        });
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).json({
+            success: false,
+            msg: 'Server Error'
+        })
+        next();
+    }
+});
 
 module.exports = router;
