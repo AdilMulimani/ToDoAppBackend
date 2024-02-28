@@ -150,7 +150,6 @@ router.post("/login",async (req, res)=>{
 
 router.get('/', user_jwt, async(req, res, next) => {
     try {
-
         const user = await user_model.findById(req.user.id).select('-password');
         res.status(200).json({
             success: true,
