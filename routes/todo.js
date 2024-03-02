@@ -2,19 +2,19 @@
 const express = require("express")
 //require auth for user id
 const auth = require("../middleware/user_jwt")
-//requiring todo model
+//requiring to do model
 const todo = require("../models/todo")
 //creating express router
 const router = express.Router()
 
-//creating new todo post
+//creating new to do post
 router.post("/",auth,async (req, res, next)=>{
     //always try to use try-catch blocks with async functions because they return a promise
     try {
         const toDoObj = await todo.create({
             title : req.body.title,
             description :req.body.description,
-            user :req.userId
+            user :req.user.id
         });
 
         if(!toDoObj)
@@ -41,7 +41,7 @@ router.post("/",auth,async (req, res, next)=>{
 router.get("/",auth,async (req, res, next)=>{
     try {
         //we will get all the unfinished to do task
-        const toDoObj = await todo.find({user:req.userId,finished: false})
+        const toDoObj = await todo.find({user:req.user.id, finished: false})
 
         if(!toDoObj)
         {
@@ -132,7 +132,7 @@ router.delete("/:id",async (req, res, next)=>{
 router.get("/finished",auth,async (req, res, next)=>{
     try {
         //we will get all the unfinished to do task
-        const toDoObj = await todo.find({user:req.userId,finished: true})
+        const toDoObj = await todo.find({user:req.user.id,finished: true})
 
         if(!toDoObj)
         {

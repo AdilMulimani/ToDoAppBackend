@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const  connectDb = async ()=>{
     //waiting for database to be connected
     const conn = await mongoose.connect(process.env.MONGO_URI,{
-
     });
 
     //logging to check if the database was connected

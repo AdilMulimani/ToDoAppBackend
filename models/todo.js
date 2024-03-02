@@ -16,7 +16,7 @@ const todoSchema = new mongoose.Schema({
     user:{
         //this stores object id
         type:mongoose.Schema.Types.ObjectId,
-        ref:"user"
+        ref:"User"
     },
     //is it finished?
     finished:{
