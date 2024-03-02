@@ -145,7 +145,7 @@ router.get("/finished",auth,async (req, res, next)=>{
             success:true,
             count:toDoObj.length,
             todo:toDoObj,
-            message:"Fetched all the finished tasks"
+            message:"Fetched all the finished tasks "
         })
     }
     catch (err)
