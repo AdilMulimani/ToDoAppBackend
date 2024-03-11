@@ -144,10 +144,9 @@ router.post("/login",async (req, res)=>{
         res.status(500).json({
             success:false,
             msg:"Server error"
-        })
+        });
     }
-
-})
+});
 
 //update user details
 router.patch('/update/:id',async(req,res)=>{
@@ -166,10 +165,11 @@ router.patch('/update/:id',async(req,res)=>{
             new : true,
             runValidators :true
         });
-      return   res.status(200).json({
+
+      return res.status(200).json({
             success : true,
             user: userExists
-        })
+        });
     }
     catch (err)
     {
@@ -177,7 +177,7 @@ router.patch('/update/:id',async(req,res)=>{
         res.status(500).json({
             success:false,
             msg:"Server error"
-        })
+        });
     }
 });
 
