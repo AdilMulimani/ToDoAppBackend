@@ -10,6 +10,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 //getting the user model here
 const user_model = require("../models/User.js");
+const todo = require("../models/todo");
 
 //posting a request at end point /register
 //authentication and authorization
@@ -147,6 +148,38 @@ router.post("/login",async (req, res)=>{
     }
 
 })
+
+//update user details
+router.patch('/update/:id',async(req,res)=>{
+    try {
+        let userExists =  await user_model.findById(req.params.id)
+
+        if(!userExists)
+        {
+            return res.status(400).json({
+                success:false,
+                message:"User doesn't exists"
+            });
+        }
+
+        userExists = await user_model.findByIdAndUpdate(req.params.id,req.body,{
+            new : true,
+            runValidators :true
+        });
+      return   res.status(200).json({
+            success : true,
+            user: userExists
+        })
+    }
+    catch (err)
+    {
+        console.log(err)
+        res.status(500).json({
+            success:false,
+            msg:"Server error"
+        })
+    }
+});
 
 router.get('/', user_jwt, async(req, res, next) => {
     try {
