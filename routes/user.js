@@ -165,7 +165,7 @@ router.patch('/update/:id',async(req,res)=>{
             new : true,
             runValidators :true
 
-        });
+        }).select("-password");
 
       return res.status(200).json({
             success : true,
