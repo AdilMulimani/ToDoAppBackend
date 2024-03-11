@@ -164,6 +164,7 @@ router.patch('/update/:id',async(req,res)=>{
         userExists = await user_model.findByIdAndUpdate(req.params.id,req.body,{
             new : true,
             runValidators :true
+
         });
 
       return res.status(200).json({
