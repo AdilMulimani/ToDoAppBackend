@@ -12,6 +12,10 @@ const todoSchema = new mongoose.Schema({
     description:{
         type:String
     },
+    //category
+    category:{
+        type:String
+    },
     //we store user id
     user:{
         //this stores object id

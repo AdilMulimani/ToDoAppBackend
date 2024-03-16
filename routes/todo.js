@@ -14,6 +14,7 @@ router.post("/",auth,async (req, res, next)=>{
         const toDoObj = await todo.create({
             title : req.body.title,
             description :req.body.description,
+            category:req.body.category,
             user :req.user.id
         });
 
