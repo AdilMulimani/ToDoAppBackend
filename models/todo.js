@@ -14,7 +14,8 @@ const todoSchema = new mongoose.Schema({
     },
     //category
     category:{
-        type:String
+        type:String,
+        default:""
     },
     //we store user id
     user:{
