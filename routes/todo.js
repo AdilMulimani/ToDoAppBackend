@@ -64,6 +64,30 @@ router.get("/",auth,async (req, res, next)=>{
     }
 });
 
+//getting the count of all to do task
+router.get("/todoCount",auth,async (req,res,next)=>{
+    try {
+        //we will get all the unfinished to do task
+        const toDoObj = await todo.find({user:req.user.id, finished: false})
+
+        if(!toDoObj)
+        {
+            return res.status(400).json({
+                success:false,
+                message:"Some error occurred"
+            });
+        }
+        return res.status(200).json({
+            count:toDoObj.length
+        })
+    }
+    catch (err)
+    {
+        next(err)
+    }
+});
+
+
 //updating a to do task
 router.put("/:id",async (req, res, next)=>{
     try {
@@ -147,6 +171,28 @@ router.get("/finished",auth,async (req, res, next)=>{
             count:toDoObj.length,
             todo:toDoObj,
             message:"Fetched all the finished tasks "
+        })
+    }
+    catch (err)
+    {
+        next(err)
+    }
+});
+
+router.get("/finishedCount",auth,async (req,res,next)=>{
+    try {
+
+        const toDoObj = await todo.find({user:req.user.id,finished: true})
+
+        if(!toDoObj)
+        {
+            return res.status(400).json({
+                success:false,
+                message:"Some error occurred"
+            });
+        }
+        return res.status(200).json({
+            count:toDoObj.length
         })
     }
     catch (err)
