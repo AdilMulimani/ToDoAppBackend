@@ -149,7 +149,7 @@ router.post("/login",async (req, res)=>{
 });
 
 //update user details
-router.patch('/update/:id',async(req,res)=>{
+router.put('/update/:id',async(req,res)=>{
     try {
         let userExists =  await user_model.findById(req.params.id)
 
