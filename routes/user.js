@@ -152,7 +152,6 @@ router.post("/login",async (req, res)=>{
 router.put('/update/:id',async(req,res)=>{
     try {
         let userExists =  await user_model.findById(req.params.id)
-
         if(!userExists)
         {
             return res.status(400).json({
